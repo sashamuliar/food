@@ -1,0 +1,14 @@
+{
+  "name": "food",
+  "version": "1.0.0",
+  "description": "Some site about food",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "food"
+  ],
+  "author": "Mr.M",
+  "license": "ISC"
+}
