@@ -10,11 +10,39 @@
 </head>
 <body>
   <div class="container">
-    <h1>Please add alergen</h1>
-    <form action="/alergen" method="post">
-      <input type="text" name="new_alergen">
+    <h1>Please add company</h1>
+    <form action="/add_company" method="post">
+      <label for="new_company">Company Name</label><br>
+      <input type="text" name="new_company"><br>
+      <hr>
+      <label for="kitchen">kitchen</label>
+      <select class="" name="kitchen">
+          <option value="Italian">Italian</option>
+          <option value="Boulgarian">Boulgarian</option>
+          <option value="English">English</option>
+          <option value="Ukrainian">Ukrainian</option>
+          <option value="Spanish">Spanish</option>
+          <option value="Georgian">Georgian</option>
+          <option value="Multiple">Multiple</option>
+      </select>
+      <hr>
+      <label for="dishName">Dishes</label>
+      <input type="text" name="dish_name" value="">
+      <select class="" name="alergens">
+        <% alergens.forEach(function(alergen) { %>
+        <option value=<%=alergen%> ><%= alergen %></option>
+        <% }) %>
+      </select>
+      <hr>
+      <textarea name="about_company" placeholder="About company"></textarea><br>
       <input type="submit">
     </form>
+    <h3>List of Companies</h3>
+    <ul>
+      <% companies.forEach(function(company) { %>
+      <li><%= company %></li>
+      <% }) %>
+    </ul>
     <h3><a href="/">Get Home</a></h3>
   </div>
 </body>

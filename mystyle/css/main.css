@@ -5,3 +5,7 @@ body{
   background: #cacaca;
   height: 100%;
 }
+textarea{
+  width: 100%;
+  height: 200px;
+}
