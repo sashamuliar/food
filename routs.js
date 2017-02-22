@@ -2,9 +2,41 @@ var express = require('express');
 var path = require('path');
 var router = express.Router();
 
+var prod = [{
+  id: 1,
+  name:'laptop'
+},
+{
+  id:2,
+  name:'micro'
+}];
 router.get('/', function(req, res){
   res.render('index');
 });
+
+
+router.get('/ajax',function(req, res){
+  console.log('ajax here');
+  res.render('ajax');
+});
+
+router.post('/products',function(req, res){
+  var typing = req.body.typing;
+  db.collection('alergens')
+    .find(
+      {name:{$regex: typing, $options: 'ix'}},
+      {name:1, _id:0}
+    )
+    // .limit(5)
+    .toArray(function(err, docs) {
+             if (err) { console.log(err) };
+             var allAlergens = docs.map(function(doc){
+                 return doc.name;
+            });
+            res.send({products: allAlergens});
+          });
+});
+
 
 router.get('/add_alergen', function(req, res){
   db.collection('alergens').find().toArray(function(err, docs) {

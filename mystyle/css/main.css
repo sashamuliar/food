@@ -9,3 +9,21 @@ textarea{
   width: 100%;
   height: 200px;
 }
+nav ul li a{
+  cursor: pointer;
+}
+.searchBox{
+  width: 100%;
+  margin-top: 200px;
+  margin-bottom: 100px;
+  text-align: center;
+}
+.searchBox .searchLine{
+  width: 60%;
+}
+
+.after p{
+  margin-top: 100px;
+  position: absolute;
+  width: 100%;
+}

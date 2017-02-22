@@ -9,10 +9,40 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+  <nav class="navbar navbar-default navbar-default-right">
+    <div class="container">
+      <ul class="nav navbar-nav">
+        <li><a href="/">To have some...</a></li>
+        <li><a href="/help">Help</a></li>
+        <li><a href="/form">Register</a></li>
+        <li><a href="#">Login</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </div>
+  </nav>
   <div class="container">
+
+
     <h1>Hello from main page</h1>
+
+    <div class="searchBox">
+
+        <form class="" action="/search" method="get">
+          <select class="" name="" required="">
+            <option disabled="" selected="">Choose your city</option>
+            <option value="Lviv">Lviv</option>
+            <option value="Sarny">Sarny</option>
+          </select>
+          <input type="text" name="search" id="search" placeholder="Search for restourant..." class="searchLine">
+          <input type="submit" name="" value="Search">
+        </form>
+        <div class="after" id="after"></div>
+
+    </div>
     <a href="add_alergen">Add new alergen</a><br>
     <a href="add_company">Add new company</a>
+    <script src="jquery/dist/jquery.min.js"></script>
+    <script src="js/ajax_test.js"></script>
   </div>
 </body>
 </html>
