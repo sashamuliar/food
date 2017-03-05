@@ -2,7 +2,7 @@ html{
   height: 100%;
 }
 body{
-  background: #cacaca;
+
   height: 100%;
 }
 textarea{
@@ -14,16 +14,30 @@ nav ul li a{
 }
 .searchBox{
   width: 100%;
-  margin-top: 200px;
-  margin-bottom: 100px;
+  margin-top: 100px;
+  margin-bottom: 10px;
   text-align: center;
 }
 .searchBox .searchLine{
   width: 60%;
+  display: inline;
 }
 
 .after p{
   margin-top: 100px;
   position: absolute;
   width: 100%;
+}
+.jumbotron h1{
+  font-size: 53px;
+}
+.sel{
+  display: inline-block;
+  width: auto;
+}
+.page-header{
+  margin-top: 0;
+}
+footer{
+  margin-top: 40px;
 }

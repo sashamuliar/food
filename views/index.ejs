@@ -6,41 +6,65 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Welcome to food search</title>
   <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/jambotron.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <nav class="navbar navbar-default navbar-default-right">
-    <div class="container">
-      <ul class="nav navbar-nav">
-        <li><a href="/">To have some...</a></li>
-        <li><a href="/help">Help</a></li>
-        <li><a href="/form">Register</a></li>
-        <li><a href="#">Login</a></li>
-        <li><a href="/about">About</a></li>
-      </ul>
-    </div>
-  </nav>
   <div class="container">
 
+    <%- include('header') -%>
 
-    <h1>Hello from main page</h1>
+     <div class="jumbotron">
+       <h1>Just type...to find some food...</h1>
+       <div class="searchBox">
 
-    <div class="searchBox">
+           <form class="" action="/search" method="get">
+             <select class="form-control sel" name="" required="">
+               <option disabled="" selected="">Choose your city</option>
+               <option value="Lviv">Lviv</option>
+               <option value="Sarny">Sarny</option>
+             </select>
+             <input type="text" name="search" id="search" placeholder="Search for restourant..." class="searchLine form-control">
+             <input type="submit" class="btn btn-success" name="" value="Search">
+           </form>
+           <div class="after" id="after"></div>
 
-        <form class="" action="/search" method="get">
-          <select class="" name="" required="">
-            <option disabled="" selected="">Choose your city</option>
-            <option value="Lviv">Lviv</option>
-            <option value="Sarny">Sarny</option>
-          </select>
-          <input type="text" name="search" id="search" placeholder="Search for restourant..." class="searchLine">
-          <input type="submit" name="" value="Search">
-        </form>
-        <div class="after" id="after"></div>
+       </div>
+     </div>
 
-    </div>
-    <a href="add_alergen">Add new alergen</a><br>
-    <a href="add_company">Add new company</a>
+     <div class="row marketing">
+       <div class="col-lg-6">
+         <h4>Subheading</h4>
+         <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+         <h4>Subheading</h4>
+         <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+         <h4>Subheading</h4>
+         <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+       </div>
+
+       <div class="col-lg-6">
+         <h4>Subheading</h4>
+         <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+         <h4>Subheading</h4>
+         <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+         <h4>Subheading</h4>
+         <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+       </div>
+     </div>
+
+     <a href="add_alergen" class="btn btn-primary">Add new alergen</a><br><br>
+     <a href="add_company" class="btn btn-primary">Add new company</a><br><br>
+
+     <%- include('footer') -%>
+     
+
+   </div> <!-- /container -->
+
+
     <script src="jquery/dist/jquery.min.js"></script>
     <script src="js/ajax_test.js"></script>
   </div>
