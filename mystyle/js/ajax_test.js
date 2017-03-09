@@ -1,23 +1,36 @@
 //hello
 $(function() {
   $('#search').on('keyup', function(){
-    var searchInput = $('#search');
-    $.ajax({
-      url: '/products',
-      method: 'post',
-      contentType: 'application/json',
-      data: JSON.stringify({typing: searchInput.val() }),
-      success:function(res){
-        var mirror = document.createElement('p');
-        var textnode = document.createTextNode(res.products);
-        var par = document.getElementById('after');
-        mirror.appendChild(textnode);
-        if (par.firstChild){
-          par.removeChild(par.firstChild);
-        }
-        par.appendChild(mirror);
-        console.log(res);
-      }
-    })
+    var $searchInput = $('#search').val();
+
+
+        $.ajax({
+          url: '/products',
+          method: 'post',
+          contentType: 'application/json',
+          data: JSON.stringify({typing: $searchInput }),
+          success:function(res){
+            var par = document.getElementById('after');
+            var count = par.childNodes.length;
+
+            if (par.firstChild){
+              for(var i = 0; i < count; i++){
+                par.removeChild(par.childNodes[0]);
+              }
+            }
+            if ($searchInput !== ''){
+              res.products.forEach(function(result){
+                var mirror = document.createElement('p');
+                var textnode = document.createTextNode(result);
+                mirror.appendChild(textnode);
+                // console.log(mirror);
+                par.appendChild(mirror);
+                // console.log(mirror);
+              })
+            }
+          }
+        })
+
+
   });
 });

@@ -58,12 +58,9 @@ mongoose.connect(uri, function(error){
     })
   }
 });
-// mongoClient.connect('mongodb://localhost:27017/food', function(err, database){
-//   if (err) {
-//     return console.log(err)
-//   }
-//   db = database;
-//   app.listen(PORT, function(){
-//     console.log('server is dancing with port ' + PORT);
-//   });
-// })
+mongoClient.connect('mongodb://localhost:27017/food', function(err, database){
+  if (err) {
+    return console.log(err)
+  }
+  db = database;
+})

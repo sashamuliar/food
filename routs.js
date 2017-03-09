@@ -133,7 +133,7 @@ router.post('/register', function(req, res){
   req.checkBody('name', 'Name is required').notEmpty();
   req.checkBody('username', 'Username is required').notEmpty();
   req.checkBody('email', 'Email is required').notEmpty();
-  req.checkBody('email', 'Email is required').isEmail();
+  req.checkBody('email', 'Email is not valid').isEmail();
   req.checkBody('password', 'Password is required').notEmpty();
   req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
@@ -149,15 +149,24 @@ router.post('/register', function(req, res){
       email:req.body.email,
       password:req.body.password
     });
-    newUser.save(function(){
-      console.log('user saved');
-    })
-    console.log(newUser);
-    req.flash('success_msg', 'You are registered and now can login');
-    res.redirect('login');
-  };
-
-
+    var usern = req.body.username;
+    User.findOne({username:{$regex: req.body.username, $options: 'ix'}}, function(err, user){
+      if (err) {
+          return err
+      }
+      if (user) {
+        req.flash('error_msg', 'Username is already exists');
+        res.redirect('register');
+      } else {
+        newUser.save(function(){
+          console.log('user saved');
+        });
+        console.log(newUser);
+        req.flash('success_msg', 'You are registered and now can login');
+        res.redirect('login');
+      };
+    });
+  }
 });
 
 router.get('/login', function(req, res){
@@ -205,7 +214,7 @@ router.post('/login',
 
 router.get('/logout', function(req, res){
   req.logout();
-  
+
   req.flash('success_msg', 'You are logged out');
 
   res.redirect('/login');
@@ -217,7 +226,8 @@ var UserSchema = new Schema({
   name: String,
   username: {
     type: String,
-    index: true
+    index: true,
+    unique: true
   },
   email: String,
   password: String

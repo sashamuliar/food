@@ -18,7 +18,9 @@
       <% errors.forEach(function(error){ %>
         <div class="alert alert-danger"><%= error.msg %></div>
       <%  })} %>
-
+      <% if (error_msg && error_msg.length > 0) { %>
+        <div class="alert alert-danger"><%= error_msg %></div>
+      <% } %>
 
 
       <form method="post" action="/register">
