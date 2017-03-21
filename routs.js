@@ -4,6 +4,9 @@ var path = require('path');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var User = require('./models/user');
+var Company = require('./models/company');
+var Alergen = require('./models/alergen');
 
 
 router.get('/', function(req, res){
@@ -18,110 +21,102 @@ router.get('/ajax',function(req, res){
 
 router.post('/products',function(req, res){
   var typing = req.body.typing;
-  db.collection('alergens')
-    .find(
-      {name:{$regex: typing, $options: 'ix'}},
-      {name:1, _id:0}
-    )
-    // .limit(5)
-    .toArray(function(err, docs) {
-             if (err) { console.log(err) };
-             var allAlergens = docs.map(function(doc){
-                 return doc.name;
-            });
-            res.send({products: allAlergens});
-          });
+  Company.find({ name:{ $regex: typing, $options: 'ix' }}).exec(function(err, companies){
+    if (err) console.log(err);
+    var findedCompanies = companies.map(function(company){
+        return company.name;
+    });
+    res.send({products: findedCompanies});
+  });
 });
 
 
 router.get('/add_alergen', function(req, res){
-  db.collection('alergens').find().toArray(function(err, docs) {
-      if (err) { console.log(err) };
-      var allAlergens = docs.map(function(doc){
-          return doc.name;
-        });
-      res.render('add_alergen', {
-        alergens: allAlergens
-      });
+  Alergen.find().exec(function(err, alergens){
+    if (err) console.log(err);
+    var allAlergens = alergens.map(function(alergen){
+      return alergen.name;
     });
+    res.render('add_alergen', {
+      alergens: allAlergens
+    });
+  });
 });
 
 router.get('/add_company', function(req, res){
-  db.collection('alergens').find().toArray(function(err, docs) {
-      if (err) { console.log(err) };
-      var allAlergens = docs.map(function(doc){
-          return doc.name;
-        });
-      db.collection('companies').find().toArray(function(err, docs) {
-        if (err) { console.log(err) };
-        var allCompanies = docs.map(function(doc){
-            return doc.name;
-          });
-        res.render('add_company', {
-          alergens: allAlergens,
-          companies: allCompanies
-        });
-      })
+  Alergen.find().exec(function(err, alergens){
+    if (err) console.log(err);
+    var allAlergens = alergens.map(function(alergen){
+      return alergen.name;
     });
+    Company.find().exec(function(err, companies){
+      if (err) console.log(err);
+      var allCompanies = companies.map(function(company){
+        return company.name;
+      });
+      res.render('add_company', {
+        alergens: allAlergens,
+        companies: allCompanies
+      });
+    });
+  });
 });
 
 //adding new alergens
 router.post('/add_alergen', function(req, res){
-  var alergen = { name: req.body.new_alergen };
-  db.collection('alergens').find().toArray(function(err, docs) {
-      if (err) { console.log(err) };
-      var allAlergens = docs.map(function(doc){
-          return doc.name;
-      });
-      var rule = false;
-      allAlergens.forEach(function(single){
-        if (single === alergen.name) {
-          return rule = true;
-        };
-      });
-      if (rule) {
-        res.redirect('/add_alergen');
-      } else {
-        db.collection('alergens').insert(alergen, function(err, result){
-          if (err) console.log(err);
-          res.redirect('/add_alergen');
-        });
-      }
-  });
+  var newAlergen = new Alergen ({ name: req.body.new_alergen });
+   Alergen.findOne({ name: {$regex: req.body.new_alergen , $options: 'ix'}}, function(err, alergen){
+     if (err) return err;
+     if (alergen){
+       res.redirect('/add_alergen');
+     } else {
+       newAlergen.save(function(err){
+         if (err) {
+           console.log(err);
+           return res.sendStatus(500);
+         };
+         req.flash('success_msg', newAlergen.name + ' saved alergen');
+         res.redirect('/add_alergen');
+       });
+     };
+   });
 });
 
 //deleting alergens
-
 router.post('/delete_alergen', function(req, res){
-  console.log(req.body.delete_alergen);
-  db.collection('alergens').deleteOne(
-    {name: req.body.delete_alergen},
-    function(err, result) {
-      if (err){
-        console.log(err);
-        return res.sendStatus(500);
-      }
-      res.send('deleted ' + req.body.delete_alergen);
-    }
-  );
-})
+  var deleting_alergen = req.body.delete_alergen;
+  Alergen.remove({ name:deleting_alergen }, function(err, result){
+    if (err) {
+      console.log(err);
+      return res.sendStatus(500);
+    };
+    req.flash('success_msg', deleting_alergen + ' suceessfully deleted')
+    res.redirect('/add_alergen');
+  });
+});
+
 // adding new companies
 router.post('/add_company', function(req, res){
-  var newCompany = {
+  var newCompany = new Company ({
     name: req.body.new_company,
     kitchen: req.body.kitchen,
-    about: req.body.about_company
-  };
-  newCompany.dishes = [];
+    about: req.body.about_company,
+    adress: req.body.adress,
+    phone: req.body.phone,
+    email: req.body.email
+  });
   newCompany.dishes.push({
     dish:req.body.dish_name,
     alergens:req.body.alergens
   });
-  db.collection('companies').insert(newCompany, function(err, result){
-    if (err) console.log(err);
+  newCompany.save(function(err){
+    if (err) {
+      console.log(err);
+      return res.sendStatus(500);
+    };
+    console.log('Company ' + newCompany.name + ' added!');
     res.redirect('/add_company');
   });
-  console.log('Company ' + newCompany.name + ' added!');
 });
 
 router.get('/register', function(req, res){
@@ -158,7 +153,10 @@ router.post('/register', function(req, res){
         req.flash('error_msg', 'Username is already exists');
         res.redirect('register');
       } else {
-        newUser.save(function(){
+        newUser.save(function(err){
+          if (err){
+            console.log(err);
+          }
           console.log('user saved');
         });
         console.log(newUser);
@@ -166,12 +164,13 @@ router.post('/register', function(req, res){
         res.redirect('login');
       };
     });
-  }
+  };
 });
 
 router.get('/login', function(req, res){
-  res.render('login', {msg:undefined});
+  res.render('login', { msg:undefined });
 });
+
 ///////////////////////
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -219,27 +218,6 @@ router.get('/logout', function(req, res){
 
   res.redirect('/login');
 });
-
-/////////////////////////
-var Schema = mongoose.Schema;
-var UserSchema = new Schema({
-  name: String,
-  username: {
-    type: String,
-    index: true,
-    unique: true
-  },
-  email: String,
-  password: String
-});
-
-UserSchema.methods.comparePasswords = function(enteredPassword, storedPassword){
-  console.log('User ' + storedPassword);
-  return enteredPassword === storedPassword;
-};
-
-var User = mongoose.model('User', UserSchema);
-
 
 
 module.exports = router;
