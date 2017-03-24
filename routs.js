@@ -21,7 +21,7 @@ router.get('/ajax',function(req, res){
 
 router.post('/products',function(req, res){
   var typing = req.body.typing;
-  Company.find({ name:{ $regex: typing, $options: 'ix' }}).exec(function(err, companies){
+  Company.find({ name:{ $regex: typing, $options: 'i' }}).exec(function(err, companies){
     if (err) console.log(err);
     var findedCompanies = companies.map(function(company){
         return company.name;
@@ -219,5 +219,24 @@ router.get('/logout', function(req, res){
   res.redirect('/login');
 });
 
+router.get('/restaurants/:name', function(req, res){
+  var restaurantName = toSpaces(req.params.name);
+  var query = new RegExp(restaurantName, 'i');
+  Company.findOne({name : { $regex: query, $options: 'i' }}, function(err, restaurant){
+    if (restaurant) {
+      res.render('restaurant', {
+        restaurant:restaurant
+      })
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+function toUnderscore(str){
+  return str.replace(/ /g, '_');
+};
+function toSpaces(str){
+  return str.replace(/_/g, ' ');
+};
 
 module.exports = router;

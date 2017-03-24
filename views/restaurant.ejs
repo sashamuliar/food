@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Welcome to food search</title>
+  <link rel="stylesheet" href="../bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="../css/jambotron.css">
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+  <div class="container">
+    <%- include('header') -%>
+
+    <h1><%= restaurant.name %></h1>
+    <p>About restaurant : <%= restaurant.about %></p>
+    <p>Kitchen : <%= restaurant.kitchen %></p>
+    <p>Adress : <%= restaurant.address %></p>
+    <p>Email : <%= restaurant.email %></p>
+    <p>Phone : <%= restaurant.phone %></p>
+    <p>One dish : <%= restaurant.dishes[0].dish %></p>
+
+    <%- include('footer') -%>
+  </div>
+
+
+</body>

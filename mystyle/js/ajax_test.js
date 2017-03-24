@@ -2,7 +2,9 @@
 $(function() {
   $('#search').on('keyup', function(){
     var $searchInput = $('#search').val();
-
+    function toUnderscore(str){
+      return str.replace(/ /g, '_');
+    };
 
         $.ajax({
           url: '/products',
@@ -20,12 +22,14 @@ $(function() {
             }
             if ($searchInput !== ''){
               res.products.forEach(function(result){
+                var link = document.createElement('a');
+                link.setAttribute('href', 'restaurants/' + toUnderscore(result.toLowerCase()));
                 var mirror = document.createElement('p');
                 var textnode = document.createTextNode(result);
+                link.appendChild(mirror);
                 mirror.appendChild(textnode);
-                // console.log(mirror);
-                par.appendChild(mirror);
-                // console.log(mirror);
+                par.appendChild(link);
+
               })
             }
           }
