@@ -15,9 +15,11 @@
     <%- include('header') -%>
 
     <h1><%= restaurant.name %></h1>
+    <img src=<%= "images/" + restaurant.images %> alt="">
     <p>About restaurant : <%= restaurant.about %></p>
     <p>Kitchen : <%= restaurant.kitchen %></p>
-    <p>Adress : <%= restaurant.address %></p>
+    <p>City : <%= restaurant.city %></p>
+    <p>Address : <%= restaurant.address %></p>
     <p>Email : <%= restaurant.email %></p>
     <p>Phone : <%= restaurant.phone %></p>
     <p>One dish : <%= restaurant.dishes[0].dish %></p>

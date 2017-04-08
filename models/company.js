@@ -12,7 +12,8 @@ var CompanySchema = new Schema({
   },
   kitchen : Array,
   about : String,
-  adress : String,
+  city : String,
+  address : String,
   dishes : Array,
   phone : String,
   email : String

@@ -10,7 +10,23 @@ var Alergen = require('./models/alergen');
 
 
 router.get('/', function(req, res){
-  res.render('index');
+  Company.find().exec(function(err, companies){
+    if (err) console.log(err);
+    var cities = companies.map(function(company){
+      return company.city;
+    });
+    // var newCities = [];
+    // for (var i = 0; i < cities.length; i++){
+    //   for (var b = 0; b < cities.length; b++){
+    //     if (cities[i] == cities.[b])
+    //   }
+    // }
+    var unique = cities.filter(function(value, index){
+      return cities.indexOf(value) === index && cities.indexOf(value) > 0;
+    })
+
+    res.render('index', {cities : unique});
+  });
 });
 
 
@@ -21,7 +37,10 @@ router.get('/ajax',function(req, res){
 
 router.post('/products',function(req, res){
   var typing = req.body.typing;
-  Company.find({ name:{ $regex: typing, $options: 'i' }}).exec(function(err, companies){
+  var city = req.body.city;
+  Company.find({ name:{ $regex: typing, $options: 'i' }})
+  .where({ city: city })
+  .exec(function(err, companies){
     if (err) console.log(err);
     var findedCompanies = companies.map(function(company){
         return company.name;
@@ -101,7 +120,8 @@ router.post('/add_company', function(req, res){
     name: req.body.new_company,
     kitchen: req.body.kitchen,
     about: req.body.about_company,
-    adress: req.body.adress,
+    city: req.body.city,
+    address: req.body.address,
     phone: req.body.phone,
     email: req.body.email
   });

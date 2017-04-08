@@ -19,10 +19,11 @@
        <div class="searchBox">
 
            <form class="" action="/search" method="get">
-             <select class="form-control sel" name="" required="">
+             <select class="form-control sel" name="city" required="" id="city">
                <option disabled="" selected="">Choose your city</option>
-               <option value="Lviv">Lviv</option>
-               <option value="Sarny">Sarny</option>
+               <% cities.forEach(function(city){ %>
+                 <option value=<%=city%>><%=city%></option>
+               <% }) %>
              </select>
              <input type="text" name="search" id="search" placeholder="Search for restourant..." class="searchLine form-control" autocomplete="off">
              <input type="submit" class="btn btn-success" name="" value="Search">

@@ -2,6 +2,7 @@
 $(function() {
   $('#search').on('keyup', function(){
     var $searchInput = $('#search').val();
+    var $city = $('#city').val();
     function toUnderscore(str){
       return str.replace(/ /g, '_');
     };
@@ -10,7 +11,8 @@ $(function() {
           url: '/products',
           method: 'post',
           contentType: 'application/json',
-          data: JSON.stringify({typing: $searchInput }),
+          data: JSON.stringify({typing: $searchInput,
+                                  city:$city}),
           success:function(res){
             var par = document.getElementById('after');
             var count = par.childNodes.length;
