@@ -22,7 +22,7 @@ router.get('/', function(req, res){
     //   }
     // }
     var unique = cities.filter(function(value, index){
-      return cities.indexOf(value) === index && cities.indexOf(value) > 0;
+      return cities.indexOf(value) === index //&& cities.indexOf(value) >= 0//;
     })
 
     res.render('index', {cities : unique});
@@ -38,15 +38,27 @@ router.get('/ajax',function(req, res){
 router.post('/products',function(req, res){
   var typing = req.body.typing;
   var city = req.body.city;
-  Company.find({ name:{ $regex: typing, $options: 'i' }})
-  .where({ city: city })
-  .exec(function(err, companies){
-    if (err) console.log(err);
-    var findedCompanies = companies.map(function(company){
-        return company.name;
+  if (city){
+    Company.find({ name:{ $regex: typing, $options: 'i' }})
+    .where({ city : city })
+    .exec(function(err, companies){
+      if (err) console.log(err);
+      var findedCompanies = companies.map(function(company){
+          return company.name;
+      });
+      res.send({products: findedCompanies});
     });
-    res.send({products: findedCompanies});
-  });
+  } else {
+    Company.find({ name:{ $regex: typing, $options: 'i' }})
+    .exec(function(err, companies){
+      if (err) console.log(err);
+      var findedCompanies = companies.map(function(company){
+          return company.name;
+      });
+      res.send({products: findedCompanies});
+    });
+  }
+
 });
 
 
